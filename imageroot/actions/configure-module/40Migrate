@@ -20,11 +20,6 @@
 # along with NethServer.  If not, see COPYING.
 #
 
-# No migration required
-if [ ! -f config.json ]; then
-    exit 0
-fi
-
 # Prepare database initialization
 cat <<EOF > restore/zz_stop.sh
 #!/bin/sh
@@ -37,9 +32,8 @@ chmod a+x restore/zz_stop.sh
 # The cointainer will be stopped at the end
 /usr/bin/podman run --rm --replace --name postgres-app --env-file=$HOME/.config/state/environment \
     --volume postgres-data:/var/lib/postgresql/data:Z \
-    --volume  $HOME/.config/state/restore/:/docker-entrypoint-initdb.d/:Z \
-    --env POSTGRES_USER=mattuser \
-    --env POSTGRES_PASSWORD=Nethesis,1234 \
+    --env POSTGRES_USER=odoouser \
+    --env POSTGRES_PASSWORD=ZhuMeYvgByyf \
     --env POSTGRES_DB=odoo \
     --env TZ=UTC \
     ${POSTGRES_IMAGE}
@@ -55,19 +49,11 @@ sleep 10
 
 
 # Wait for the container
-while ! podman ps | grep -q odoo-app
+while ! podman ps | grep -q odoo
 do
-    echo "Waiting for odoo-app"
+    echo "Waiting for odoo"
     sleep 1
 done
 
 # Wait a bit for container initialization
 sleep 5
-
-# Copy the new config file and make it writable
-podman cp --archive config.json odoo-app:/odoo/config/config.json
-podman exec odoo-app chown -R odoo:odoo /odoo/config/
-
-
-# Cleanup migration data
-rm -f config.json

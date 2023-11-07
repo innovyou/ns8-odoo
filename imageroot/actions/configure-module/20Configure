@@ -39,5 +39,5 @@ host = data.get("host")
 
 # Talk with agent using file descriptor.
 # Setup configuration from user input.
-agent.set_env("OO_SERVICESETTINGS_SITEURL","https://" + host)
+agent.set_env("OO_SERVICESETTINGS_SITEURL","http://" + host)
 agent.set_env("OO_SERVICESETTINGS_LISTENADDRESS",":8069")

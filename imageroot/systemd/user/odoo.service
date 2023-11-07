@@ -22,12 +22,11 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/odoo.pid \
     --volume odoo-filestore:/var/lib/odoo:Z \
     --volume odoo-extra-addons:/mnt/extra-addons:Z \
     --publish 127.0.0.1:${TCP_PORT}:8069 \
-    --env OO_SQLSETTINGS_DRIVERNAME=postgres \
-    --env OO_SQLSETTINGS_DATASOURCE=postgres://odoouser:odoouser,1234@127.0.0.1:5432/odoo?sslmode=disable&connect_timeout=10 \
-    --env TZ=UTC \
+    --env HOST=127.0.0.1 \
+    --env PORT=5430 \
+    --env USER=odoodbuser \
+    --env PASSWORD=ZhuMeYvgByyf \
     --env-file=%S/state/smarthost.env \
-    --env OO_SERVICESETTINGS_SITEURL=${OO_SERVICESETTINGS_SITEURL} \
-    --env OO_SERVICESETTINGS_LISTENADDRESS=${OO_SERVICESETTINGS_LISTENADDRESS} \
     --env TRAEFIK_HOST=${TRAEFIK_HOST} \
     --image-volume=ignore \
     --no-healthcheck
