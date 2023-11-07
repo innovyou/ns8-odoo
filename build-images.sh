@@ -11,7 +11,7 @@ images=()
 # The image will be pushed to GitHub container registry
 repobase="${REPOBASE:-ghcr.io/innovyou}"
 # Configure the image name
-reponame="ns8-odoo"
+reponame="odoo"
 
 # Create a new empty container image
 container=$(buildah from scratch)
