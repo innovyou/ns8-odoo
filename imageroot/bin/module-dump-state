@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#
+# Copyright (C) 2022 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+set -e
+
+echo "Dumping odoo postgres database"
+podman exec postgres-app pg_dump -U odoouser --format=c odoo > odoo.pg_dump

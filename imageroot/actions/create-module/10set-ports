@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+
+#
+# Copyright (C) 2022 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+import os
+import agent
+
+
+# split port and set in env
+port = os.environ["TCP_PORTS"].split(',')
+# we use TCP_PORT for env var for traefik eg port[0]
+agent.set_env("CALLS_TCP_PORT", port[1])
+agent.set_env("CALLS_UDP_PORT", os.environ["UDP_PORT"])
+agent.set_env("POD_EXTRA_ARGS", f'--publish={os.environ["UDP_PORT"]}:{os.environ["UDP_PORT"]}/udp --publish={port[1]}:{port[1]}/tcp')
+# Ignore exit code

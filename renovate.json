@@ -1,0 +1,71 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "ignorePaths": [
+    "**/ui/**"
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": [
+        "build-images.sh"
+      ],
+      "matchStrings": [
+        "MATTERMOST_VERSION=(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "odoo/odoo-team-edition",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": [
+        "build-images.sh"
+      ],
+      "matchStrings": [
+        "docker\\.io\/node:(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "node",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": [
+        "build-images.sh"
+      ],
+      "matchStrings": [
+        "docker\\.io\/postgres:(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "postgres",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": [
+        "test-module.sh"
+      ],
+      "matchStrings": [
+        "ghcr\\.io\/marketsquare\/robotframework-browser\/rfbrowser-stable:(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "ghcr.io/marketsquare/robotframework-browser/rfbrowser-stable",
+      "datasourceTemplate": "docker"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "node"
+      ],
+      "allowedVersions": "<= 18"
+    },
+    {
+      "matchPackageNames": [
+        "ghcr.io/marketsquare/robotframework-browser/rfbrowser-stable"
+      ],
+      "allowedVersions": "<= 10.0"
+    },
+    {
+      "matchPackageNames": [
+        "postgres"
+      ],
+      "allowedVersions": "<= 13"
+    }
+  ]
+}

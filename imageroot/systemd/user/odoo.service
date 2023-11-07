@@ -1,0 +1,42 @@
+#
+# This systemd unit starts a odoo instance using Podman.
+# Most parts of this file come from podman-generate-systemd.
+#
+
+[Unit]
+Description=Podman odoo.service
+Requires=postgres-app.service
+After=postgres-app.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=-%S/state/environment
+ExecStartPre=runagent discover-smarthost
+WorkingDirectory=%S/state
+Restart=always
+TimeoutStopSec=90
+ExecStartPre=/bin/rm -f %t/odoo.pid %t/odoo.ctr-id
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/odoo.pid \
+    --cidfile %t/odoo.ctr-id --cgroups=no-conmon \
+    --pod-id-file %t/odoo.pod-id --replace -d --name  odoo \
+    --volume odoo-filestore:/var/lib/odoo:Z \
+    --volume odoo-extra-addons:/mnt/extra-addons:Z \
+    --publish 127.0.0.1:${TCP_PORT}:8069 \
+    --env OO_SQLSETTINGS_DRIVERNAME=postgres \
+    --env OO_SQLSETTINGS_DATASOURCE=postgres://odoouser:odoouser,1234@127.0.0.1:5432/odoo?sslmode=disable&connect_timeout=10 \
+    --env TZ=UTC \
+    --env-file=%S/state/smarthost.env \
+    --env OO_SERVICESETTINGS_SITEURL=${OO_SERVICESETTINGS_SITEURL} \
+    --env OO_SERVICESETTINGS_LISTENADDRESS=${OO_SERVICESETTINGS_LISTENADDRESS} \
+    --env TRAEFIK_HOST=${TRAEFIK_HOST} \
+    --image-volume=ignore \
+    --no-healthcheck
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/odoo.ctr-id -t 10
+ExecReload=/usr/bin/podman kill -s HUP odoo
+SyslogIdentifier=%u
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/odoo.ctr-id
+PIDFile=%t/odoo.pid
+Type=forking
+
+[Install]
+WantedBy=default.target
