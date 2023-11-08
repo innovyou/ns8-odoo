@@ -1,4 +1,7 @@
 #!/bin/bash
 
-systemctl --user enable odoo.service
-systemctl --user restart odoo.service
+systemctl --user enable postgres.service
+systemctl --user start postgres.service
+
+# wait for postgres first setup
+sleep 5

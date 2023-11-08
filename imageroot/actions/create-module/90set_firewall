@@ -9,3 +9,8 @@ import os
 import agent
 
 # Ignore exit code
+
+# add the new port
+agent.add_public_service(os.environ['MODULE_ID'], [
+    str(os.environ["TCP_PORT"]) + "/tcp", # external calls port
+])

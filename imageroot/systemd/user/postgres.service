@@ -1,0 +1,30 @@
+[Unit]
+Description=Podman postgres.service
+Before=odoo.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=%S/state/environment
+WorkingDirectory=%S/state
+Restart=always
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/postgres.pid %t/postgres.ctr-id
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/postgres.pid \
+    --cidfile %t/postgres.ctr-id --cgroups=no-conmon \
+    --replace -d --name postgres \
+    --hostname postgres \
+    --network odoonet \
+    --volume postgres-data:/var/lib/postgresql/data:Z \
+    --env POSTGRES_USER=odoodbuser \
+    --env POSTGRES_PASSWORD=ZhuMeYvgByyf \
+    --env POSTGRES_DB=postgres \
+    --env TZ=UTC \
+    ${POSTGRES_IMAGE}
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/postgres.ctr-id -t 10
+ExecReload=/usr/bin/podman kill -s HUP postgres
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/postgres.ctr-id
+PIDFile=%t/postgres.pid
+Type=forking
+
+[Install]
+WantedBy=default.target

@@ -53,7 +53,7 @@ api-cli run get-configuration --agent module/odoo1 --data null | jq
 
 You can access the database of a running instance using this command:
 ```
-podman exec -ti postgres-app psql -U odoouser
+podman exec -ti postgres psql -U odoouser
 ```
 
 ## Smarthost discovery

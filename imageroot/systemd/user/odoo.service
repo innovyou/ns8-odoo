@@ -1,12 +1,8 @@
-#
-# This systemd unit starts a odoo instance using Podman.
-# Most parts of this file come from podman-generate-systemd.
-#
-
 [Unit]
 Description=Podman odoo.service
-Requires=postgres-app.service
-After=postgres-app.service
+Requires=postgres.service
+BindsTo=postgres.service
+After=postgres.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -18,18 +14,21 @@ TimeoutStopSec=90
 ExecStartPre=/bin/rm -f %t/odoo.pid %t/odoo.ctr-id
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/odoo.pid \
     --cidfile %t/odoo.ctr-id --cgroups=no-conmon \
-    --pod-id-file %t/odoo.pod-id --replace -d --name  odoo \
+    --replace -d --name odoo \
+    --hostname odoo \
+    --network odoonet \
     --volume odoo-filestore:/var/lib/odoo:Z \
     --volume odoo-extra-addons:/mnt/extra-addons:Z \
-    --publish 127.0.0.1:${TCP_PORT}:8069 \
-    --env HOST=127.0.0.1 \
-    --env PORT=5430 \
+    --publish 0.0.0.0:${TCP_PORT}:8069 \
+    --env HOST=postgres \
+    --env PORT=5432 \
     --env USER=odoodbuser \
+    --env POSTGRES_USER=odoodbuser \
     --env PASSWORD=ZhuMeYvgByyf \
+    --env POSTGRES_PASSWORD=ZhuMeYvgByyf \
     --env-file=%S/state/smarthost.env \
     --env TRAEFIK_HOST=${TRAEFIK_HOST} \
-    --image-volume=ignore \
-    --no-healthcheck
+    ${ODOO_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/odoo.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP odoo
 SyslogIdentifier=%u

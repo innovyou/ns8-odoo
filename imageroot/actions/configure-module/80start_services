@@ -22,5 +22,4 @@
 
 # If the control reaches this step, the service can be enabled and started
 
-systemctl --user enable odoo.service
 systemctl --user restart odoo.service
