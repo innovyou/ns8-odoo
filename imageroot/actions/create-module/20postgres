@@ -1,0 +1,4 @@
+#!/bin/bash
+
+systemctl --user enable odoo.service
+systemctl --user restart odoo.service

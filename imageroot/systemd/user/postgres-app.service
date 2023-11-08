@@ -9,11 +9,10 @@ EnvironmentFile=%S/state/environment
 WorkingDirectory=%S/state
 Restart=always
 TimeoutStopSec=70
-ExecStartPre=/bin/mkdir -p %S/state/restore/
 ExecStartPre=/bin/rm -f %t/postgres-app.pid %t/postgres-app.ctr-id
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/postgres-app.pid \
     --cidfile %t/postgres-app.ctr-id --cgroups=no-conmon \
-    --pod-id-file %t/odoo.pod-id --replace -d --name  postgres-app \
+    --replace -d --name  postgres-app \
     --volume postgres-data:/var/lib/postgresql/data:Z \
     --publish 127.0.0.1:5430:5432 \
     --env POSTGRES_USER=odoodbuser \
