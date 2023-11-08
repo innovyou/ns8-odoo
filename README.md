@@ -9,12 +9,12 @@ Start and configure a odoo instance.
 
 Instantiate the module with:
 
-    add-module ghcr.io/nethserver/odoo:latest 1
+    add-module ghcr.io/innovyou/odoo:latest 1
 
 The output of the command will return the instance name.
 Output example:
 
-    {"module_id": "odoo1", "image_name": "odoo", "image_url": "ghcr.io/nethserver/odoo:latest"}
+    {"module_id": "odoo1", "image_name": "odoo", "image_url": "ghcr.io/innovyou/odoo:latest"}
 
 ## Configure
 
@@ -72,7 +72,7 @@ To uninstall the instance:
 Test the module using the `test-module.sh` script:
 
 
-    ./test-module.sh <NODE_ADDR> ghcr.io/nethserver/odoo:latest
+    ./test-module.sh <NODE_ADDR> ghcr.io/innovyou/odoo:latest
 
 The tests are made using [Robot Framework](https://robotframework.org/)
 
