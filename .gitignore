@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Odoo env to file
+utils/odoo.conf
