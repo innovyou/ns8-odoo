@@ -18,6 +18,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/odoo.pid \
     --hostname odoo \
     --network odoonet \
     --volume odoo-filestore:/var/lib/odoo:Z \
+    --volume utils:/utils:Z \
     --volume odoo-extra-addons:/mnt/extra-addons:Z \
     --publish 0.0.0.0:${TCP_PORT}:8069 \
     --env HOST=postgres \
