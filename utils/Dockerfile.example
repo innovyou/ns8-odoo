@@ -1,0 +1,12 @@
+FROM dr01.innovyou.co/odoo:16.20231009
+
+USER root
+
+
+COPY ./scripts/env_to_conf.sh /bin/env_to_conf.sh
+RUN chmod +x /bin/env_to_conf.sh
+
+COPY ./scripts/start_odoo.sh /bin/start_odoo.sh
+RUN chmod +x /bin/start_odoo.sh 
+
+USER odoo

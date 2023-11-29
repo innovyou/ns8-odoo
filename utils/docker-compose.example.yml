@@ -14,7 +14,7 @@ services:
         container_name: "odoo16-dev-odoo"
         build:
             context: ./build
-            dockerfile: ../Dockerfile.dev
+            dockerfile: ../Dockerfile.example
         depends_on:
             - db
         ports:
