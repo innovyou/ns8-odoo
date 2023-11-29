@@ -7,7 +7,7 @@
 ###########
 
 
-ODOO_CONFIG_FILE="odoo.conf"
+ODOO_CONFIG_FILE="/etc/odoo/odoo.conf"
 
 read -d '' BASE << EOF
 [options]
@@ -83,10 +83,6 @@ env | while IFS= read -r line; do
 
         if [[ "$name" == "ODOO_POSTGRES_PORT" ]]; then
                 echo "db_port = $value" >> $ODOO_CONFIG_FILE;
-        fi
-
-        if [[ "$name" == "ODOO_POSTGRES_SSLMODE" ]]; then
-                echo "db_sslmode = $value" >> $ODOO_CONFIG_FILE;
         fi
 
         if [[ "$name" == "ODOO_POSTGRES_SSLMODE" ]]; then
