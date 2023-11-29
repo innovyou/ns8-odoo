@@ -4,6 +4,7 @@
 # @Author: nardellu@innovyou.co
 # @Version: 1.0.0
 # @Description: From env vars to odoo config file
+# this script need to be already inside a image build!
 ###########
 
 
@@ -11,7 +12,6 @@ ODOO_CONFIG_FILE="/etc/odoo/odoo.conf"
 
 read -d '' BASE << EOF
 [options]
-addons_path = /mnt/extra-addons
 data_dir = /var/lib/odoo
 csv_internal_sep = ,
 dbfilter = 
@@ -126,6 +126,10 @@ env | while IFS= read -r line; do
         fi
 
         # General
+        if [[ "$name" == "ODOO_ADDONS_PATH" ]]; then
+                echo "addons_path = $value" >> $ODOO_CONFIG_FILE;
+        fi
+        
         if [[ "$name" == "ODOO_LISTDB" ]]; then
                 echo "list_db = $value" >> $ODOO_CONFIG_FILE;
         fi
