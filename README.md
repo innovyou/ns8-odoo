@@ -4,7 +4,6 @@ Start and configure a odoo instance.
 
 ## Documentation
 
-
 ## Install
 
 Instantiate the module with:
