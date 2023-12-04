@@ -8,29 +8,7 @@
 set -e -o pipefail
 exec 1>&2 # Redirect any output to the journal (stderr)
 
-mkdir -vp restore
-cat - >restore/odoo_restore.sh <<'EOS'
-# Read dump file from standard input:
-pg_restore --no-owner --no-privileges -U odoouser -d odoo
-ec=$?
-docker_temp_server_stop
-exit $ec
-EOS
+# restore odoo db
+echo "Restoring odoo postgres database"
+podman exec -i postgres psql -U odoodbuser -d postgres < odoo.pg_dump
 
-# Override the image /docker-entrypoint-initdb.d contents, to restore the
-# DB dump file. The container will be stopped at the end
-
-podman run \
-    --rm \
-    --interactive \
-    --network=none \
-    --volume=postgres-data:/var/lib/postgresql/data:Z \
-    --replace --name=restore_db \
-    --env POSTGRES_USER=odoouser \
-    --env POSTGRES_PASSWORD=ZhuMeYvgByyf \
-    --env POSTGRES_DB=odoo \
-    --env TZ=UTC \
-    "${POSTGRES_IMAGE}" < odoo.pg_dump
-
-# If the restore is successful, clean up:
-rm -rfv restore/ odoo.pg_dump

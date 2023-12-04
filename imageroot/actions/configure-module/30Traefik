@@ -25,6 +25,15 @@ import agent
 import agent.tasks
 import os
 
+# get second port
+
+def get_second_tcp_port():
+    ports = os.environ["TCP_PORTS"].split(",")
+    string_port = "%s" % (
+        ports[1].rstrip().lstrip()
+    )
+    return string_port
+
 # Try to parse the stdin as JSON.
 # If parsing fails, output everything to stderr
 data = json.load(sys.stdin)
