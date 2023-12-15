@@ -20,7 +20,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/odoo.pid \
     --volume odoo-filestore:/var/lib/odoo:Z \
     --volume utils:/utils:Z \
     --volume odoo-extra-addons:/mnt/extra-addons:Z \
-    --publish 0.0.0.0:${TCP_PORT}:8069 \
+    --publish 0.0.0.0:${TCP_PORTS_RANGE}:8069-8071 \
     --env HOST=postgres \
     --env PORT=5432 \
     --env USER=odoodbuser \
