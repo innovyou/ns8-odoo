@@ -7,5 +7,5 @@
 
 set -e
 
-echo "Dumping odoo postgres database"
-podman exec postgres pg_dump --create -U odoodbuser -w odoo > odoo.pg_dump
+echo "Dumping odoo postgres databases"
+podman exec postgres pg_dumpall -U odoodbuser -w > odoo.pg_dump
