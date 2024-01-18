@@ -1,20 +1,22 @@
 {
-  "name": "Odoo",
-  "description": {
-    "en": "Odoo descr en.",
-    "it": "Odoo descr it."
-  },
-  "categories": ["collaboration"],
-  "authors": [
-    {
-      "name": "Innovyou",
-      "email": "info@innovyou.co"
-    }
-  ],
-  "docs": {
-    "documentation_url": "https://www.odoo.com/documentation/16.0/",
-    "bug_url": "https://github.com/odoo/odoo",
-    "code_url": "https://github.com/odoo/odoo"
-  },
-  "source": "ghcr.io/nethserver/odoo"
+    "name": "Odoo",
+    "description": {
+        "en": "Odoo descr en.",
+        "it": "Odoo descr it."
+    },
+    "categories": [
+        "collaboration"
+    ],
+    "authors": [
+        {
+            "name": "Innovyou",
+            "email": "info@innovyou.co"
+        }
+    ],
+    "docs": {
+        "documentation_url": "https://www.innovyou.co/#contacts",
+        "bug_url": "https://www.innovyou.co/#contacts",
+        "code_url": "https://www.innovyou.co/#contacts"
+    },
+    "source": "ghcr.io/innovyou/odoo"
 }
