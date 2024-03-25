@@ -1,39 +1,17 @@
 [Unit]
 Description=Podman odoo.service
-Requires=postgres.service
-BindsTo=postgres.service
-After=postgres.service
+Before=odoo-app.service postgres.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-EnvironmentFile=-%S/state/environment
-ExecStartPre=runagent discover-smarthost
-WorkingDirectory=%S/state
+EnvironmentFile=%S/state/environment
 Restart=always
-TimeoutStopSec=90
-ExecStartPre=/bin/rm -f %t/odoo.pid %t/odoo.ctr-id
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/odoo.pid \
-    --cidfile %t/odoo.ctr-id --cgroups=no-conmon \
-    --replace -d --name odoo \
-    --hostname odoo \
-    --network odoonet \
-    --volume odoo-filestore:/var/lib/odoo:Z \
-    --volume utils:/utils:Z \
-    --volume odoo-extra-addons:/mnt/extra-addons:Z \
-    --publish 0.0.0.0:${TCP_PORTS_RANGE}:8069-8071 \
-    --env HOST=postgres \
-    --env PORT=5432 \
-    --env USER=odoodbuser \
-    --env POSTGRES_USER=odoodbuser \
-    --env PASSWORD=ZhuMeYvgByyf \
-    --env POSTGRES_PASSWORD=ZhuMeYvgByyf \
-    --env-file=%S/state/smarthost.env \
-    --env TRAEFIK_HOST=${TRAEFIK_HOST} \
-    ${ODOO_IMAGE}
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/odoo.ctr-id -t 10
-ExecReload=/usr/bin/podman kill -s HUP odoo
-SyslogIdentifier=%u
-ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/odoo.ctr-id
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/odoo.pid %t/odoo.pod-id
+ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/odoo.pid --pod-id-file %t/odoo.pod-id --name odoo -p 127.0.0.1:${TCP_PORTS_RANGE}:8069-8071 -p 127.0.0.1:5432:5432 --replace --network=slirp4netns:allow_host_loopback=true --add-host=accountprovider:10.0.2.2
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/odoo.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/odoo.pod-id -t 10
+ExecStopPost=/usr/bin/podman pod rm --ignore -f --pod-id-file %t/odoo.pod-id
 PIDFile=%t/odoo.pid
 Type=forking
 

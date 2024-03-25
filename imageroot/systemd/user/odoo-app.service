@@ -1,0 +1,35 @@
+[Unit]
+Description=Podman odoo-app.service
+BindsTo=odoo.service
+After=odoo.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=%S/state/environment
+Restart=always
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/odoo-app.pid %t/odoo-app.ctr-id
+ExecStartPre=-runagent discover-smarthost
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/odoo-app.pid \
+    --cidfile %t/odoo-app.ctr-id --cgroups=no-conmon \
+    --pod-id-file %t/odoo.pod-id --replace -d --name odoo-app \
+    --env-file=%S/state/smarthost.env \
+    --volume odoo-filestore:/var/lib/odoo:Z \
+    --volume utils:/utils:Z \
+    --volume odoo-extra-addons:/mnt/extra-addons:Z \
+    --env HOST=127.0.0.1 \
+    --env PORT=5432 \
+    --env USER=odoodbuser \
+    --env POSTGRES_USER=odoodbuser \
+    --env PASSWORD=ZhuMeYvgByyf \
+    --env POSTGRES_PASSWORD=ZhuMeYvgByyf \
+    --env-file=%S/state/smarthost.env \
+    --env TRAEFIK_HOST=${TRAEFIK_HOST} \
+    ${ODOO_IMAGE}
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/odoo-app.ctr-id -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/odoo-app.ctr-id
+PIDFile=%t/odoo-app.pid
+Type=forking
+
+[Install]
+WantedBy=default.target

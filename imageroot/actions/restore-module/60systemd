@@ -15,4 +15,4 @@ systemctl --user restart postgres.service
 # wait for postgres first setup
 sleep 5
 
-systemctl --user restart odoo.service
+systemctl --user enable --now odoo-app.service

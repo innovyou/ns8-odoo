@@ -1,7 +1,7 @@
 #!/bin/bash
 
-systemctl --user enable postgres.service
-systemctl --user start postgres.service
+#systemctl --user enable postgres.service
+#systemctl --user start postgres.service
 
 # wait for postgres first setup
-sleep 5
+#sleep 5

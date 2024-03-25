@@ -1,4 +1,4 @@
 #!/bin/bash
 
-systemctl --user enable odoo.service
-systemctl --user start odoo.service
+#systemctl --user enable odoo-app.service
+#systemctl --user start odoo-app.service

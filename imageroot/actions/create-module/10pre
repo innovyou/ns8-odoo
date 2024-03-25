@@ -1,3 +1,4 @@
 #!/bin/bash
 
-podman network create odoonet
+#systemctl --user enable odoo.service
+#systemctl --user start odoo.service
