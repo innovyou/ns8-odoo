@@ -1,4 +1,8 @@
 #!/bin/bash
 
-#systemctl --user enable odoo.service
-#systemctl --user start odoo.service
+set -e
+
+# Redirect any output to the journal (stderr)
+exec 1>&2
+
+#

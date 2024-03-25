@@ -8,7 +8,7 @@ EnvironmentFile=%S/state/environment
 Restart=always
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/odoo.pid %t/odoo.pod-id
-ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/odoo.pid --pod-id-file %t/odoo.pod-id --name odoo -p 127.0.0.1:${TCP_PORTS_RANGE}:8069-8071 -p 127.0.0.1:5432:5432 --replace --network=slirp4netns:allow_host_loopback=true --add-host=accountprovider:10.0.2.2
+ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/odoo.pid --pod-id-file %t/odoo.pod-id --name odoo -p 127.0.0.1:${TCP_PORTS_RANGE}:8069-8071 --replace --network=slirp4netns:allow_host_loopback=true --add-host=accountprovider:10.0.2.2
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/odoo.pod-id
 ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/odoo.pod-id -t 10
 ExecStopPost=/usr/bin/podman pod rm --ignore -f --pod-id-file %t/odoo.pod-id

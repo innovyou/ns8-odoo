@@ -1,3 +1,10 @@
 #!/bin/bash
 
-systemctl --user restart odoo-app.service
+set -e
+
+# Redirect any output to the journal (stderr)
+exec 1>&2
+
+# Enable and restart the service
+systemctl --user enable odoo.service postgres.service odoo-app.service
+systemctl --user restart odoo.service postgres.service odoo-app.service

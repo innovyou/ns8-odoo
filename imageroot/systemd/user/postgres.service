@@ -13,7 +13,6 @@ ExecStartPre=/bin/rm -f %t/postgres.pid %t/postgres.ctr-id
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/postgres.pid \
     --cidfile %t/postgres.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/odoo.pod-id --replace -d --name postgres \
-    --hostname postgres \
     --volume postgres-data:/var/lib/postgresql/data:Z \
     --env POSTGRES_USER=odoodbuser \
     --env POSTGRES_PASSWORD=ZhuMeYvgByyf \

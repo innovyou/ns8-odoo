@@ -1,7 +1,8 @@
 #!/bin/bash
 
-#systemctl --user enable postgres.service
-#systemctl --user start postgres.service
+set -e
 
-# wait for postgres first setup
-#sleep 5
+# Redirect any output to the journal (stderr)
+exec 1>&2
+
+#
