@@ -14,7 +14,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/postgres.pid \
     --cidfile %t/postgres.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/odoo.pod-id --replace -d --name postgres \
     --volume postgres-data:/var/lib/postgresql/data:Z \
-    --env POSTGRES_USER=odoodbuser \
+    --env POSTGRES_USER=odoo \
     --env POSTGRES_PASSWORD=ZhuMeYvgByyf \
     --env POSTGRES_DB=postgres \
     --env TZ=UTC \

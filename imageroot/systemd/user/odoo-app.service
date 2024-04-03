@@ -17,15 +17,13 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/odoo-app.pid \
     --volume odoo-filestore:/var/lib/odoo:Z \
     --volume utils:/utils:Z \
     --volume odoo-extra-addons:/mnt/extra-addons:Z \
-    --env HOST=127.0.0.1 \
-    --env PORT=5432 \
-    --env USER=odoodbuser \
-    --env POSTGRES_USER=odoodbuser \
-    --env PASSWORD=ZhuMeYvgByyf \
-    --env POSTGRES_PASSWORD=ZhuMeYvgByyf \
+    --env PGHOST=127.0.0.1 \
+    --env PGPORT=5432 \
+    --env PGUSER=odoo \
+    --env PGPASSWORD=ZhuMeYvgByyf \
     --env-file=%S/state/smarthost.env \
     --env TRAEFIK_HOST=${TRAEFIK_HOST} \
-    ${ODOO_IMAGE}
+    ${NS8_ODOO_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/odoo-app.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/odoo-app.ctr-id
 PIDFile=%t/odoo-app.pid
