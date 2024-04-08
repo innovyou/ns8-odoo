@@ -74,8 +74,8 @@ response2 = agent.tasks.run(
     action='set-route',
     data={
         'instance': "gevent%s" % (os.environ['MODULE_ID']),
-        'url':  'http://127.0.0.1:%s/longpolling/poll' % (get_second_tcp_port()),
-        'path': '/longpolling/poll',
+        'url':  'ws://127.0.0.1:%s/websocket' % (get_second_tcp_port()),
+        'path': '/websocket',
         'host': host,
         'http2https': h2hs,
         'lets_encrypt': le
