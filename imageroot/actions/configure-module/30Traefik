@@ -78,7 +78,8 @@ response2 = agent.tasks.run(
         'path': '/websocket',
         'host': host,
         'http2https': h2hs,
-        'lets_encrypt': le
+        'lets_encrypt': le,
+        'strip_prefix': True
     },
 )
 
