@@ -74,7 +74,7 @@ response2 = agent.tasks.run(
     action='set-route',
     data={
         'instance': "gevent%s" % (os.environ['MODULE_ID']),
-        'url':  'ws://127.0.0.1:%s/websocket' % (get_second_tcp_port()),
+        'url':  'http://127.0.0.1:%s/websocket' % (get_second_tcp_port()), # KO! ASKED NETHESIS SUPPORT!
         'path': '/websocket',
         'host': host,
         'http2https': h2hs,
