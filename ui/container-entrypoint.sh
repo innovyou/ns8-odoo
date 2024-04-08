@@ -1,5 +1,7 @@
 #!/bin/bash
 
+yarn config set strict-ssl false
+
 if [[ -z "$1" ]]; then
     echo "Missing parameter: append 'watch' or 'build'"
 elif [[ "$1" = "watch" ]]; then
