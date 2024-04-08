@@ -18,7 +18,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/postgres.pid \
     --env POSTGRES_PASSWORD=ZhuMeYvgByyf \
     --env POSTGRES_DB=postgres \
     --env TZ=UTC \
-    ${POSTGRES_IMAGE}
+    ${NS8_POSTGRES_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/postgres.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP postgres
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/postgres.ctr-id

@@ -3,8 +3,8 @@
 # Terminate on error
 set -e
 
-POSTGRES_VERSION="15.2-alpine"
-ODOO_VERSION="16.20240403"
+POSTGRES_VERSION="16.20240405"
+ODOO_VERSION="16.20240405"
 
 # Prepare variables for later use
 images=()
@@ -33,7 +33,7 @@ buildah config --entrypoint=/ \
     --label="org.nethserver.authorizations=node:fwadm traefik@node:routeadm" \
     --label="org.nethserver.tcp-ports-demand=3" \
     --label="org.nethserver.rootfull=0" \
-    --label="org.nethserver.images=docker.io/postgres:$POSTGRES_VERSION docker.io/innovyou/ns8-odoo:$ODOO_VERSION" \
+    --label="org.nethserver.images=docker.io/innovyou/ns8-postgres:$POSTGRES_VERSION docker.io/innovyou/ns8-odoo:$ODOO_VERSION" \
     "${container}"
 # Commit the image
 buildah commit "${container}" "${repobase}/${reponame}"
