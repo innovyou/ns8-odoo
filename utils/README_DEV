@@ -1,0 +1,21 @@
+### Base info for dev
+
+## install module
+
+- bash build-images.sh && buildah push ghcr.io/innovyou/odoo:latest docker://ghcr.io/innovyou/odoo:development && add-module ghcr.io/innovyou/odoo:development 1
+
+## remove module 
+- remove-module --no-preserve odoo106
+
+### UI DEV
+
+- Install first the module (ns8-odoo)
+
+
+- nodebuilder-odoo
+- - is a container created by build-images.sh
+- - it create a pod env for build vue UI
+- - podman rm nodebuilder-odoo (if issues occures)
+
+
+

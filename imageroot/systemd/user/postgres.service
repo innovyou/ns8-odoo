@@ -16,7 +16,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/postgres.pid \
     --volume postgres-data:/var/lib/postgresql/data:Z \
     --env POSTGRES_USER=odoo \
     --env POSTGRES_PASSWORD=ZhuMeYvgByyf \
-    --env POSTGRES_DB=postgres \
+    --env POSTGRES_DB=odoo \
     --env TZ=UTC \
     ${NS8_POSTGRES_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/postgres.ctr-id -t 10

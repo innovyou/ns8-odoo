@@ -5,5 +5,5 @@ exec 1>&2 # Redirect any output to the journal (stderr)
 
 # restore odoo db
 echo "Restoring odoo postgres database"
-podman exec -i postgres psql -U odoodbuser -d postgres < odoo.pg_dump
+podman exec -i postgres psql -U odoo -d odoo < odoo.pg_dump
 

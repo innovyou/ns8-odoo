@@ -23,7 +23,7 @@ if ! buildah containers --format "{{.ContainerName}}" | grep -q nodebuilder-odoo
 fi
 
 echo "Build static UI files with node..."
-buildah run --env="NODE_OPTIONS=--openssl-legacy-provider" --workingdir=/usr/src/ui --env="NODE_OPTIONS=--openssl-legacy-provider" nodebuilder-odoo sh -c "yarn install && yarn build"
+buildah run --env="NODE_OPTIONS=--openssl-legacy-provider" --workingdir=/usr/src/ui --env="NODE_OPTIONS=--openssl-legacy-provider" nodebuilder-odoo sh -c "yarn config set strict-ssl false && yarn install && yarn build"
 
 # Add imageroot directory to the container image
 buildah add "${container}" imageroot /imageroot
