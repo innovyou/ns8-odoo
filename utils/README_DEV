@@ -2,9 +2,13 @@
 
 ## install module
 
+- purge previous local images
+- - podman rmi -f odoo:latest && podman rmi -f odoo:development
+
 - bash build-images.sh && buildah push ghcr.io/innovyou/odoo:latest docker://ghcr.io/innovyou/odoo:development && add-module ghcr.io/innovyou/odoo:development 1
 
 ## remove module 
+
 - remove-module --no-preserve odoo106
 
 ### UI DEV
