@@ -8,3 +8,6 @@ exec 1>&2
 # Enable and restart the service
 systemctl --user enable odoo.service postgres.service odoo-app.service
 systemctl --user restart odoo.service postgres.service odoo-app.service
+
+# Let services be responsive, to run 90ldap
+sleep 10
