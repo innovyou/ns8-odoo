@@ -4,7 +4,7 @@
 set -e
 
 POSTGRES_VERSION="16.20240405"
-ODOO_VERSION="16.20240405"
+ODOO_VERSION="16.20240409"
 
 # Prepare variables for later use
 images=()
