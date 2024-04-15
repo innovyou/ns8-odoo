@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import json
 import sys
@@ -7,9 +9,9 @@ import agent
 # If parsing fails, output everything to stderr
 data = json.load(sys.stdin)
 
-# Setup default values
-host = data.get("host")
 
+# TODO move this part to 90ldap. if an error occurs during set ldap on odoo
+# we need to set ODOO_LDAP_DOMAIN = "" otherwise user can't select anymore a domain!
 ldap_domain = data.get("ldap_domain", "")
 agent.set_env("ODOO_LDAP_DOMAIN", ldap_domain)
 

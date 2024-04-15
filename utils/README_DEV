@@ -7,6 +7,11 @@
 
 - bash build-images.sh && buildah push ghcr.io/innovyou/odoo:latest docker://ghcr.io/innovyou/odoo:development && add-module ghcr.io/innovyou/odoo:development 1
 
+- GITHUB PERSONAL TOKEN
+- - buildah login ghcr.io
+- - generate personal token on github (nardellu/innovyou | secret_key)
+
+
 ## remove module 
 
 - remove-module --no-preserve odoo106

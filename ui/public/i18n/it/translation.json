@@ -11,6 +11,7 @@
         "odoo_fqdn": "FQDN Odoo",
         "ldap_domain": "Dominio LDAP",
         "no_domain": "Nessun dominio",
+        "change_ldap_domain_already_set": "Modifica non disponibile, un dominio LDAP è stato già configurato.",
         "disabled": "Disabilitato",
         "email_format": "Indirizzo e-mail non valido"
     },

@@ -7,89 +7,63 @@
     </div>
     <div v-if="error.getConfiguration" class="bx--row">
       <div class="bx--col">
-        <NsInlineNotification
-          kind="error"
-          :title="$t('action.get-configuration')"
-          :description="error.getConfiguration"
-          :showCloseButton="false"
-        />
+        <NsInlineNotification kind="error" :title="$t('action.get-configuration')" :description="error.getConfiguration"
+          :showCloseButton="false" />
       </div>
     </div>
     <div class="bx--row">
       <div class="bx--col-lg-16">
         <cv-tile :light="true">
           <cv-form @submit.prevent="configureModule">
-            <cv-text-input
-              :label="$t('settings.odoo_fqdn')"
-              placeholder="odoo.example.org"
-              v-model.trim="host"
-              class="mg-bottom"
-              :invalid-message="$t(error.host)"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              ref="host"
-            >
+            <cv-text-input :label="$t('settings.odoo_fqdn')" placeholder="odoo.example.org" v-model.trim="host"
+              class="mg-bottom" :invalid-message="$t(error.host)"
+              :disabled="loading.getConfiguration || loading.configureModule" ref="host">
             </cv-text-input>
-            <cv-toggle
-              value="letsEncrypt"
-              :label="$t('settings.lets_encrypt')"
-              v-model="isLetsEncryptEnabled"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              class="mg-bottom"
-            >
+            <cv-toggle value="letsEncrypt" :label="$t('settings.lets_encrypt')" v-model="isLetsEncryptEnabled"
+              :disabled="loading.getConfiguration || loading.configureModule" class="mg-bottom">
               <template slot="text-left">{{
-                $t("settings.disabled")
-              }}</template>
+          $t("settings.disabled")
+        }}</template>
               <template slot="text-right">{{
-                $t("settings.enabled")
-              }}</template>
+            $t("settings.enabled")
+          }}</template>
             </cv-toggle>
-            <cv-toggle
-              value="httpToHttps"
-              :label="$t('settings.http_to_https')"
-              v-model="isHttpToHttpsEnabled"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              class="mg-bottom"
-            >
+            <cv-toggle value="httpToHttps" :label="$t('settings.http_to_https')" v-model="isHttpToHttpsEnabled"
+              :disabled="loading.getConfiguration || loading.configureModule" class="mg-bottom">
               <template slot="text-left">{{
-                $t("settings.disabled")
-              }}</template>
+          $t("settings.disabled")
+        }}</template>
               <template slot="text-right">{{
-                $t("settings.enabled")
-              }}</template>
+            $t("settings.enabled")
+          }}</template>
             </cv-toggle>
-            <cv-select
-              :label="$t('settings.ldap_domain')"
-              v-model.trim="host"
-              v-model="selectedDomain"
-              class="mg-bottom"
-              :invalid-message="$t(error.host)"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              ref="host"
-            >
-              <option v-for="(item, index) in ldapDomainOptions"
-                v-bind:value="item"
-                v-bind:key="index"
-              >
-                  {{item != "" ? item : $t("settings.no_domain")}}
-              </option>
-            </cv-select>
+            <div>
+              <label class="bx--toggle-input__label" for="selectedDomain" v-if="ldap_domain === ''">
+                {{ $t('settings.ldap_domain') }}
+              </label>
+              <label class="bx--toggle-input__label" for="selectedDomain" v-if="ldap_domain !== ''">
+                {{ $t('settings.ldap_domain') }} ({{$t('settings.change_ldap_domain_already_set')}})
+              </label>
+              <cv-select id="selectedDomain" v-model.trim="selectedDomain"
+                :label="''"
+                :title="ldap_domain === '' ? '' : $t('settings.change_ldap_domain_already_set')"
+                class="mg-bottom" :invalid-message="$t(error.ldap_domain)"
+                :disabled="loading.getConfiguration || loading.configureModule || ldap_domain !== ''"
+                ref="selectedDomain">
+                <option v-for="(item, index) in ldapDomainOptions" v-bind:value="item" v-bind:key="index"
+                  v-bind:selected="item === selectedDomain">
+                  {{ item !== "" ? item : $t("settings.no_domain") }}
+                </option>
+              </cv-select>
+            </div>
             <div v-if="error.configureModule" class="bx--row">
               <div class="bx--col">
-                <NsInlineNotification
-                  kind="error"
-                  :title="$t('action.configure-module')"
-                  :description="error.configureModule"
-                  :showCloseButton="false"
-                />
+                <NsInlineNotification kind="error" :title="$t('action.configure-module')"
+                  :description="error.configureModule" :showCloseButton="false" />
               </div>
             </div>
-            <NsButton
-              kind="primary"
-              :icon="Save20"
-              :loading="loading.configureModule"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              >{{ $t("settings.save") }}</NsButton
-            >
+            <NsButton kind="primary" :icon="Save20" :loading="loading.configureModule"
+              :disabled="loading.getConfiguration || loading.configureModule">{{ $t("settings.save") }}</NsButton>
           </cv-form>
         </cv-tile>
       </div>
@@ -120,6 +94,7 @@ export default {
       },
       urlCheckInterval: null,
       host: "",
+      ldap_domain: "",
       isLetsEncryptEnabled: false,
       isHttpToHttpsEnabled: false,
       loading: {
@@ -201,6 +176,7 @@ export default {
     getConfigurationCompleted(taskContext, taskResult) {
       const config = taskResult.output;
       this.host = config.host;
+      this.ldap_domain = config.ldap_domain ? config.ldap_domain : "";
       this.selectedDomain = config.ldap_domain ? config.ldap_domain : "";
       this.ldapDomainOptions = config.ldap_available_domains ? config.ldap_available_domains : [""];
       this.isLetsEncryptEnabled = config.lets_encrypt;
@@ -245,6 +221,8 @@ export default {
         return;
       }
 
+      this.ldap_domain = this.selectedDomain;
+
       this.loading.configureModule = true;
       const taskAction = "configure-module";
 
@@ -274,7 +252,7 @@ export default {
           action: taskAction,
           data: {
             host: this.host,
-            ldap_domain: this.selectedDomain,
+            ldap_domain: this.ldap_domain,
             lets_encrypt: this.isLetsEncryptEnabled,
             http2https: this.isHttpToHttpsEnabled,
           },
@@ -292,6 +270,7 @@ export default {
         console.error(`error creating task ${taskAction}`, err);
         this.error.configureModule = this.getErrorMessage(err);
         this.loading.configureModule = false;
+        this.ldap_domain = "";
         return;
       }
     },
@@ -299,6 +278,7 @@ export default {
       console.error(`${taskContext.action} aborted`, taskResult);
       this.error.configureModule = this.core.$t("error.generic_error");
       this.loading.configureModule = false;
+      this.ldap_domain = "";
     },
     configureModuleCompleted() {
       this.loading.configureModule = false;
@@ -312,6 +292,7 @@ export default {
 
 <style scoped lang="scss">
 @import "../styles/carbon-utils";
+
 .mg-bottom {
   margin-bottom: $spacing-06;
 }
