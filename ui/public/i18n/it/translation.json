@@ -9,6 +9,8 @@
         "configuring": "Configurazione...",
         "domain_already_used_in_traefik": "Questo dominio è già utilizzato in traefik",
         "odoo_fqdn": "FQDN Odoo",
+        "ldap_domain": "Dominio LDAP",
+        "no_domain": "Nessun dominio",
         "disabled": "Disabilitato",
         "email_format": "Indirizzo e-mail non valido"
     },

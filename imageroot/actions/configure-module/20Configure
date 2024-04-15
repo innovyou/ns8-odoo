@@ -9,3 +9,7 @@ data = json.load(sys.stdin)
 
 # Setup default values
 host = data.get("host")
+
+ldap_domain = data.get("ldap_domain", "")
+agent.set_env("ODOO_LDAP_DOMAIN", ldap_domain)
+

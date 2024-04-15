@@ -57,6 +57,22 @@
                 $t("settings.enabled")
               }}</template>
             </cv-toggle>
+            <cv-select
+              :label="$t('settings.ldap_domain')"
+              v-model.trim="host"
+              v-model="selectedDomain"
+              class="mg-bottom"
+              :invalid-message="$t(error.host)"
+              :disabled="loading.getConfiguration || loading.configureModule"
+              ref="host"
+            >
+              <option v-for="(item, index) in ldapDomainOptions"
+                v-bind:value="item"
+                v-bind:key="index"
+              >
+                  {{item != "" ? item : $t("settings.no_domain")}}
+              </option>
+            </cv-select>
             <div v-if="error.configureModule" class="bx--row">
               <div class="bx--col">
                 <NsInlineNotification
@@ -110,6 +126,10 @@ export default {
         getConfiguration: false,
         configureModule: false,
       },
+      ldapDomainOptions: [
+        ""
+      ],
+      selectedDomain: "",
       error: {
         getConfiguration: "",
         configureModule: "",
@@ -181,6 +201,8 @@ export default {
     getConfigurationCompleted(taskContext, taskResult) {
       const config = taskResult.output;
       this.host = config.host;
+      this.selectedDomain = config.ldap_domain ? config.ldap_domain : "";
+      this.ldapDomainOptions = config.ldap_available_domains ? config.ldap_available_domains : [""];
       this.isLetsEncryptEnabled = config.lets_encrypt;
       this.isHttpToHttpsEnabled = config.http2https;
       this.loading.getConfiguration = false;
@@ -252,6 +274,7 @@ export default {
           action: taskAction,
           data: {
             host: this.host,
+            ldap_domain: this.selectedDomain,
             lets_encrypt: this.isLetsEncryptEnabled,
             http2https: this.isHttpToHttpsEnabled,
           },

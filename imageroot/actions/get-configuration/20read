@@ -4,6 +4,7 @@ import os
 import json
 import sys
 import agent
+from agent.ldapproxy import Ldapproxy
 
 # Prepare return variable
 config = {}
@@ -12,9 +13,20 @@ config = {}
 env = f'module/{os.environ["MODULE_ID"]}/environment'
 rdb = agent.redis_connect()
 
-config["host"] =  rdb.hget(env, "TRAEFIK_HOST");
-config["http2https"] =  rdb.hget(env, "TRAEFIK_HTTP2HTTPS") == "True";
-config["lets_encrypt"] =  rdb.hget(env, "TRAEFIK_LETS_ENCRYPT") == "True";
+config["host"] = rdb.hget(env, "TRAEFIK_HOST");
+config["ldap_domain"] = rdb.hget(env, "ODOO_LDAP_DOMAIN") if rdb.hget(env, "ODOO_LDAP_DOMAIN") else "";
+config["http2https"] = rdb.hget(env, "TRAEFIK_HTTP2HTTPS") == "True";
+config["lets_encrypt"] = rdb.hget(env, "TRAEFIK_LETS_ENCRYPT") == "True";
+
+
+# Get available ldap domains
+lp = Ldapproxy()
+config["ldap_available_domains"] = [""]
+
+domains = lp.get_domains_list()
+
+for domain in domains:
+    config["ldap_available_domains"].append(domain)
 
 # Dump the configuratio to stdout
 json.dump(config, fp=sys.stdout)
