@@ -270,6 +270,7 @@ export default {
         console.error(`error creating task ${taskAction}`, err);
         this.error.configureModule = this.getErrorMessage(err);
         this.loading.configureModule = false;
+        // if error during configure set ldap_domain empty
         this.ldap_domain = "";
         return;
       }
@@ -278,6 +279,7 @@ export default {
       console.error(`${taskContext.action} aborted`, taskResult);
       this.error.configureModule = this.core.$t("error.generic_error");
       this.loading.configureModule = false;
+      // if error during configure set ldap_domain empty
       this.ldap_domain = "";
     },
     configureModuleCompleted() {
