@@ -15,6 +15,7 @@
 ## remove module 
 
 - remove-module --no-preserve odoo106
+- podman rmi -f odoo:latest && podman rmi -f odoo:development
 
 ### UI DEV
 

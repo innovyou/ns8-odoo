@@ -101,3 +101,6 @@ except Exception as ex:
     )
     # set LDAP server to empty string
     agent.set_env("ODOO_LDAP_DOMAIN", "")
+
+    # raise Exception
+    raise ex
