@@ -23,7 +23,6 @@ ldap_base = "{ldap_base}"
 ldap_filter = "cn=%s"
 
 company_id = env.ref("base.main_company").id
-default_user_id = env.ref("base.default_user").id
 ldap_model = env["res.company.ldap"]
 servers = ldap_model.search([])
 if servers:
@@ -31,7 +30,7 @@ if servers:
 else:
     server = ldap_model.create({{
         "company": company_id,
-        "user": default_user_id,
+        "create_user": False,
         "ldap_server": ldap_server,
         "ldap_server_port": ldap_server_port,
         "ldap_tls": False,
