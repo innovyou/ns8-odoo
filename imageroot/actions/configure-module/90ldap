@@ -3,6 +3,7 @@
 import json
 import sys
 import os
+import agent
 from agent.ldapproxy import Ldapproxy
 
 SCRIPT_CONTENT = """
@@ -45,9 +46,12 @@ else:
 data = json.load(sys.stdin)
 
 # Setup LDAP values
-ldap_domain = data.get("ldap_domain")
+ldap_domain = data.get("ldap_domain", "")
 
-if not ldap_domain:
+# set env of current LDAP server
+agent.set_env("ODOO_LDAP_DOMAIN", ldap_domain)
+
+if ldap_domain == "":
     print("No LDAP domain passed. Skipping...", file=sys.stderr)
 else:
     print("Starting LDAP configuration...", file=sys.stderr)
