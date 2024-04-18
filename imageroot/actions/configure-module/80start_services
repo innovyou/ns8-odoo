@@ -5,9 +5,22 @@ set -e
 # Redirect any output to the journal (stderr)
 exec 1>&2
 
-# Enable and restart the service
-systemctl --user enable odoo.service postgres.service odoo-app.service
-systemctl --user restart odoo.service postgres.service odoo-app.service
+# Enable and restart base service
+systemctl --user enable odoo.service
+systemctl --user restart odoo.service
 
-# Let services be responsive, to run 90ldap
+sleep 2
+
+# Enable and restart the postgres service
+systemctl --user enable postgres.service
+systemctl --user restart postgres.service
+
+# if first execution wait some time for postgres to load default DB
 sleep 10
+
+# Enable and restart the odoo-app service
+systemctl --user enable odoo-app.service
+systemctl --user restart odoo-app.service
+
+# Let services be responsive, to run next 90ldap
+sleep 5
