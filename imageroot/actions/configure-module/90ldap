@@ -56,7 +56,7 @@ try:
     if ldap_domain == "":
         print("No LDAP domain passed. Skipping...", file=sys.stderr)
     else:
-        print("Starting LDAP configuration...", file=sys.stderr)
+        print("Starting LDAP configuration for %s" % ldap_domain, file=sys.stderr)
         lp = Ldapproxy()
         domain = lp.get_domain(ldap_domain)
 
@@ -90,6 +90,7 @@ try:
         os.system("podman cp /tmp/click-odoo-configure-ldap.py odoo-app:/tmp/click-odoo-configure-ldap.py")
         print("Calling click-odoo-configure-ldap.py...", file=sys.stderr)
         os.system("podman exec -it odoo-app click-odoo -d odoo /tmp/click-odoo-configure-ldap.py")
+        os.system("rm /tmp/click-odoo-configure-ldap.py")
         print("click-odoo-configure-ldap.py executed", file=sys.stderr)
 
     agent.set_env("ODOO_LDAP_DOMAIN", ldap_domain)
