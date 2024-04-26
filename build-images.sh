@@ -3,8 +3,8 @@
 # Terminate on error
 set -e
 
-POSTGRES_VERSION="16.20240405"
-ODOO_VERSION="16.20240409"
+POSTGRES_VERSION="16.20240424.1"
+ODOO_VERSION="16.20240424"
 
 # Prepare variables for later use
 images=()
