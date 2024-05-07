@@ -16,4 +16,4 @@ systemctl --user enable postgres.service
 systemctl --user restart postgres.service
 
 # first execution wait some time for postgres to load default DB
-sleep 10
+sleep 15

@@ -20,7 +20,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/odoo-app.pid \
     --env PGHOST=127.0.0.1 \
     --env PGPORT=5432 \
     --env PGUSER=odoo \
-    --env PGPASSWORD=ZhuMeYvgByyf \
+    --env PGPASSWORD=ZhuMeYvgByyfgawCf2XjBZfW \
     --env-file=%S/state/smarthost.env \
     --env TRAEFIK_HOST=${TRAEFIK_HOST} \
     ${NS8_ODOO_IMAGE}

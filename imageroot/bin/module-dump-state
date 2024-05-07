@@ -7,5 +7,6 @@
 
 set -e
 
-echo "Dumping odoo postgres databases"
-podman exec postgres pg_dumpall --clean -U odoo -w > odoo.pg_dump
+echo "Dumping all postgres databases"
+
+podman exec postgres pg_dumpall --clean -U odoo -w > all_dbs.pg_dump
