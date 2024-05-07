@@ -5,4 +5,14 @@ set -e
 # Redirect any output to the journal (stderr)
 exec 1>&2
 
-#
+# Enable and restart base service
+systemctl --user enable odoo.service
+systemctl --user restart odoo.service
+
+sleep 2
+
+# Enable and restart the postgres service
+systemctl --user enable postgres.service
+systemctl --user restart postgres.service
+
+sleep 5
