@@ -15,8 +15,7 @@ sleep 2
 systemctl --user enable postgres.service
 systemctl --user restart postgres.service
 
-# if first execution wait some time for postgres to load default DB
-sleep 10
+sleep 5
 
 # Enable and restart the odoo-app service
 systemctl --user enable odoo-app.service

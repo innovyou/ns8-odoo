@@ -5,5 +5,11 @@ exec 1>&2 # Redirect any output to the journal (stderr)
 
 # restore odoo db
 echo "Restoring odoo postgres database"
-podman exec -i postgres psql -U odoo -d odoo < odoo.pg_dump
+
+
+# remove all tables from default odoo db.
+podman exec -i postgres psql -U odoo -d odoo -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO odoo; GRANT ALL ON SCHEMA public TO public;"
+
+# restore all dbs
+podman exec -i postgres psql -U odoo < odoo.pg_dump
 
