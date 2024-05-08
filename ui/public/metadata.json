@@ -1,22 +1,23 @@
 {
-    "name": "Odoo",
+    "name": "Odoo ",
     "description": {
-        "en": "Odoo descr en.",
-        "it": "Odoo descr it."
+        "en": "Odoo is a suite of business apps that cover all company needs: CRM, eCommerce, accounting, inventory. Start now.",
+        "it": "Il software gestionale che copre tutte le esigenze aziendali: dal CRM alla Contabilità, dal Magazzino alle vendite. Scopri tutte le app."
     },
     "categories": [
-        "collaboration"
+        "collaboration",
+        "production"
     ],
     "authors": [
         {
-            "name": "Innovyou",
-            "email": "info@innovyou.co"
+            "name": "innovyou",
+            "email": "info@innovyou.it"
         }
     ],
     "docs": {
-        "documentation_url": "https://www.innovyou.co/#contacts",
-        "bug_url": "https://www.innovyou.co/#contacts",
-        "code_url": "https://www.innovyou.co/#contacts"
+        "documentation_url": "https://www.innovyou.it/odoodocumentation",
+        "bug_url": "https://github.com/innovyou/ns8-odoo/issues",
+        "code_url": " https://github.com/innovyou/ns8-odoo"
     },
-    "source": "ghcr.io/innovyou/ns8-odoo"
+    "source": "https://github.com/innovyou/ns8-odoo/pkgs/container/odoo"
 }
