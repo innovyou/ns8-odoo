@@ -4,7 +4,7 @@ Start and configure a odoo instance.
 
 ## Version
 
-16.0.0-rc
+16.20240509.0-rc
 
 ## Documentation
 
@@ -14,12 +14,12 @@ See docs: https://www.innovyou.it/odoo-documentation/
 
 Instantiate the module with:
 
-    add-module ghcr.io/innovyou/odoo:16.0.0-rc 1
+    add-module ghcr.io/innovyou/odoo:16.20240509.0-rc 1
 
 The output of the command will return the instance name.
 Output example:
 
-    {"module_id": "odoo1", "image_name": "odoo", "image_url": "ghcr.io/innovyou/odoo:16.0.0-rc"}
+    {"module_id": "odoo1", "image_name": "odoo", "image_url": "ghcr.io/innovyou/odoo:16.20240509.0-rc"}
 
 ## Configure
 
@@ -77,7 +77,7 @@ To uninstall the instance:
 Test the module using the `test-module.sh` script:
 
 
-    ./test-module.sh <NODE_ADDR> ghcr.io/innovyou/odoo:16.0.0-rc
+    ./test-module.sh <NODE_ADDR> ghcr.io/innovyou/odoo:16.20240509.0-rc
 
 The tests are made using [Robot Framework](https://robotframework.org/)
 

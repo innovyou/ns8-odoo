@@ -25,8 +25,8 @@ import agent
 import agent.tasks
 import os
 
-# get second port
 
+# get second port
 def get_second_tcp_port():
     ports = os.environ["TCP_PORTS"].split(",")
     string_port = "%s" % (
