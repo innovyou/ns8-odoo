@@ -1,0 +1,40 @@
+### Base info for dev
+
+## install module
+
+- purge previous local images
+- - podman rmi -f odoo:latest && podman rmi -f odoo:development
+
+- bash build-images.sh && buildah push ghcr.io/innovyou/odoo:latest docker://ghcr.io/innovyou/odoo:development && add-module ghcr.io/innovyou/odoo:development 1
+
+- GITHUB PERSONAL TOKEN
+- - buildah login ghcr.io
+- - generate personal token on github (nardellu/innovyou | secret_key)
+
+
+## remove module 
+
+- remove-module --no-preserve odoo106
+- podman rmi -f odoo:latest && podman rmi -f odoo:development
+
+### UI DEV
+
+- Install first the module (ns8-odoo)
+
+
+- nodebuilder-odoo (AAA)
+- - is a container created by build-images.sh
+- - it create a pod env for build vue UI
+- - podman rm nodebuilder-odoo (if issues occures)
+
+
+- dev container for ui (First part for dev)
+- - cd ui
+- - podman build -t ns8-odoo-dev .
+- - podman run -ti -v $(pwd):/app:Z --name ns8-odoo --replace ns8-odoo-dev watch
+
+
+- sync modify of UI dev
+- - cd ui
+- - watch -n 1 rsync -avz --delete dist/* /var/lib/nethserver/cluster/ui/apps/odoo109/
+

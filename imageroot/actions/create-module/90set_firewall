@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import os
+import agent
+
+# add all the exposed tcp ports
+for index, port in enumerate(os.environ["TCP_PORTS"].split(",")):
+    agent.add_public_service(
+        "%s%s" % (
+            index,
+            os.environ['MODULE_ID']
+        ),
+        ["%s/tcp" % (port),]
+    )

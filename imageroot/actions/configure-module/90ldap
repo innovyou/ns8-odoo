@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+
+import json
+import sys
+import os
+import agent
+import traceback
+from agent.ldapproxy import Ldapproxy
+
+SCRIPT_CONTENT = """
+import logging
+
+logger = logging.getLogger(__name__)
+
+ldap_server = "{ldap_server}"
+ldap_server_port = "{ldap_server_port}"
+ldap_binddn = "{ldap_binddn}"
+ldap_password = "{ldap_password}"
+ldap_base = "{ldap_base}"
+
+# Filtro utilizzato per cercare gli account degli utenti nel database LDAP.
+# È un filtro LDAP arbitrario nella rappresentazione delle stringhe.
+ldap_filter = "cn=%s"
+
+company_id = env.ref("base.main_company").id
+default_user_id = env.ref("base.default_user").id
+ldap_model = env["res.company.ldap"]
+servers = ldap_model.search([])
+if servers:
+    logger.info("res.company.ldap records already present. Skipping...")
+else:
+    server = ldap_model.create({{
+        "company": company_id,
+        "user": default_user_id,
+        "ldap_server": ldap_server,
+        "ldap_server_port": ldap_server_port,
+        "ldap_tls": False,
+        "ldap_binddn": ldap_binddn,
+        "ldap_password": ldap_password,
+        "ldap_base": ldap_base,
+        "ldap_filter": ldap_filter,
+    }})
+    logger.info("Server %s created" % server.id)
+"""
+
+
+# Try to parse the stdin as JSON.
+# If parsing fails, output everything to stderr
+data = json.load(sys.stdin)
+
+# Setup LDAP values
+ldap_domain = data.get("ldap_domain", "")
+
+try:
+
+    if ldap_domain == "":
+        print("No LDAP domain passed. Skipping...", file=sys.stderr)
+    else:
+        print("Starting LDAP configuration for %s" % ldap_domain, file=sys.stderr)
+        lp = Ldapproxy()
+        domain = lp.get_domain(ldap_domain)
+
+        ldap_server = domain.get("host")
+        # See https://nethserver.github.io/ns8-core/core/user_domains/#ldap-service-discovery
+        ldap_server = ldap_server.replace("127.0.0.1", "10.0.2.2")
+        ldap_server_port = domain.get("port")
+        ldap_tls = False
+
+        # Account utente sul server LDAP, utilizzato per interrogare la directory.
+        # Lasciare vuoto per connettersi in modo anonimo
+        ldap_binddn = domain.get("bind_dn")
+
+        # Password dell'account utente sul server LDAP, utilizzata per interrogare la directory
+        ldap_password = domain.get("bind_password")
+
+        # DN dell'ambito di ricerca dell'utente: tutti i discendenti di questa base verranno cercati per gli utenti.
+        # Enter the domain name of the LDAP server in LDAP nomenclature (e.g. dc=example,dc=com).
+        ldap_base = domain.get("base_dn")
+
+        print("Writing /tmp/click-odoo-configure-ldap.py...", file=sys.stderr)
+        with open("/tmp/click-odoo-configure-ldap.py", "w") as script_file:
+            script_file.write(SCRIPT_CONTENT.format(
+                ldap_server=ldap_server,
+                ldap_server_port=ldap_server_port,
+                ldap_binddn=ldap_binddn,
+                ldap_password=ldap_password,
+                ldap_base=ldap_base
+            ))
+
+        os.system("podman cp /tmp/click-odoo-configure-ldap.py odoo-app:/tmp/click-odoo-configure-ldap.py")
+        print("Calling click-odoo-configure-ldap.py...", file=sys.stderr)
+        os.system("podman exec -it odoo-app click-odoo -d odoo /tmp/click-odoo-configure-ldap.py")
+        os.system("rm /tmp/click-odoo-configure-ldap.py")
+        print("click-odoo-configure-ldap.py executed", file=sys.stderr)
+
+    agent.set_env("ODOO_LDAP_DOMAIN", ldap_domain)
+
+except Exception as ex:
+    print(
+        "ERROR: during setup of LDAP server on odoo \n\n: %s" % (
+            traceback.format_exc()
+        ),
+        file=sys.stderr
+    )
+    # set LDAP server to empty string
+    agent.set_env("ODOO_LDAP_DOMAIN", "")
+
+    # raise Exception
+    raise ex

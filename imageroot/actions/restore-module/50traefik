@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import agent
+import agent.tasks
+
+
+def get_second_tcp_port():
+    ports = os.environ["TCP_PORTS"].split(",")
+    string_port = "%s" % (
+        ports[1].rstrip().lstrip()
+    )
+    return string_port
+
+# Find default traefik instance for current node
+default_traefik_id = agent.resolve_agent_id('traefik@node')
+if default_traefik_id is None:
+    sys.exit(2)
+
+# Configure traefik virtual host
+response = agent.tasks.run(
+    agent_id=default_traefik_id,
+    action='set-route',
+    data={
+        'instance': os.environ['MODULE_ID'],
+        'url': f'http://127.0.0.1:{os.environ["TCP_PORT"]}',
+        'host': os.environ["TRAEFIK_HOST"],
+        'lets_encrypt': os.environ["TRAEFIK_LETS_ENCRYPT"] == True,
+        'http2https': os.environ["TRAEFIK_HTTP2HTTPS"] == True
+    },
+)
+
+# Check if traefik configuration has been successfull
+agent.assert_exp(response['exit_code'] == 0)
+
+
+# Configure traefik virtual host
+response2 = agent.tasks.run(
+    agent_id=default_traefik_id,
+    action='set-route',
+    data={
+        'instance': "gevent%s" % (os.environ['MODULE_ID']),
+        'url':  'http://127.0.0.1:%s' % (get_second_tcp_port()),
+        'path': '/websocket',
+        'host': os.environ["TRAEFIK_HOST"],
+        'lets_encrypt': os.environ["TRAEFIK_LETS_ENCRYPT"] == True,
+        'http2https': os.environ["TRAEFIK_HTTP2HTTPS"] == True
+    },
+)
+
+# Check if traefik configuration has been successfull
+agent.assert_exp(response2['exit_code'] == 0)

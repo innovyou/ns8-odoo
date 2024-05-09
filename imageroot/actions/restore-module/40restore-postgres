@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e -o pipefail
+exec 1>&2 # Redirect any output to the journal (stderr)
+
+# restore all dbs
+echo "Restoring all postgres databases"
+
+# remove all tables from default odoo db.
+podman exec -i postgres psql -U odoo -d odoo -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO odoo; GRANT ALL ON SCHEMA public TO public;"
+
+# restore all dbs
+podman exec -i postgres psql -U odoo < all_dbs.pg_dump
+
