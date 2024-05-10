@@ -18,5 +18,5 @@
         "bug_url": "https://github.com/innovyou/ns8-odoo/issues",
         "code_url": " https://github.com/innovyou/ns8-odoo"
     },
-    "source": "https://github.com/innovyou/ns8-odoo/pkgs/container/odoo"
+    "source": "https://ghcr.io/innovyou/odoo"
 }
