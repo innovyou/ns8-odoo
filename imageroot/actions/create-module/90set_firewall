@@ -2,9 +2,3 @@
 
 import os
 import agent
-
-# add all the exposed tcp ports
-agent.add_public_service(
-    os.environ['MODULE_ID'],
-    ["%s/tcp" % (port) for port in os.environ["TCP_PORTS"].split(",")]
-)
