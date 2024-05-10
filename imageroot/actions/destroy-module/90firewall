@@ -3,4 +3,8 @@
 import os
 import agent
 
-agent.remove_public_service(os.environ['MODULE_ID'])
+
+# remove all the exposed tcp ports
+agent.remove_public_service(
+    os.environ['MODULE_ID']
+)
