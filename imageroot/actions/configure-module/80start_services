@@ -23,3 +23,6 @@ systemctl --user restart odoo-app.service
 
 # Let services be responsive, to run next 90ldap
 sleep 5
+
+# fix odoo conf permissions
+podman exec -u root -it odoo-app bash -c "chown -R odoo:odoo /etc/odoo"
