@@ -15,7 +15,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/odoo-app.pid \
     --pod-id-file %t/odoo.pod-id --replace -d --name odoo-app \
     --env-file=%S/state/smarthost.env \
     --volume odoo-filestore:/var/lib/odoo:Z \
-    --volume utils:/utils:Z \
+    --volume odoo-config:/etc/odoo:Z \
     --volume odoo-extra-addons:/mnt/extra-addons:Z \
     --env PGHOST=127.0.0.1 \
     --env PGPORT=5432 \
