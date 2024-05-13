@@ -6,6 +6,16 @@ Start and configure a odoo instance.
 
 1.0.0
 
+## Odoo Version
+
+16 (16.20240509.0)
+
+docker images:
+
+https://hub.docker.com/r/innovyou/ns8-odoo
+https://hub.docker.com/r/innovyou/ns8-postgres
+
+
 ## Documentation
 
 See docs: https://docs.nethserver.org/projects/ns8/en/latest/odoo.html
