@@ -26,3 +26,4 @@ sleep 5
 
 # fix odoo conf permissions
 podman exec -u root -it odoo-app bash -c "chown -R odoo:odoo /etc/odoo"
+podman exec -u root -it odoo-app bash -c "chown  odoo:odoo /var/lib/odoo/filestore"
