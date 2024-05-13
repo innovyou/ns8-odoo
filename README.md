@@ -8,7 +8,7 @@ Start and configure a odoo instance.
 
 ## Documentation
 
-See docs: https://www.innovyou.it/odoo-documentation/
+See docs: https://docs.nethserver.org/projects/ns8/en/latest/odoo.html
 
 ## Install
 
