@@ -20,7 +20,7 @@ ldap_base = "{ldap_base}"
 
 # Filtro utilizzato per cercare gli account degli utenti nel database LDAP.
 # È un filtro LDAP arbitrario nella rappresentazione delle stringhe.
-ldap_filter = "cn=%s"
+ldap_filter = "{ldap_filter}"
 
 company_id = env.ref("base.main_company").id
 default_user_id = env.ref("base.default_user").id
@@ -65,6 +65,10 @@ try:
         ldap_server = ldap_server.replace("127.0.0.1", "10.0.2.2")
         ldap_server_port = domain.get("port")
         ldap_tls = False
+        ldap_schema = domain.get("schema")
+        ldap_filter = "uid=%s"
+        if ldap_schema == "ad":
+            ldap_filter = "sAMAccountName=%s"
 
         # Account utente sul server LDAP, utilizzato per interrogare la directory.
         # Lasciare vuoto per connettersi in modo anonimo
@@ -84,7 +88,8 @@ try:
                 ldap_server_port=ldap_server_port,
                 ldap_binddn=ldap_binddn,
                 ldap_password=ldap_password,
-                ldap_base=ldap_base
+                ldap_base=ldap_base,
+                ldap_filter=ldap_filter
             ))
 
         os.system("podman cp /tmp/click-odoo-configure-ldap.py odoo-app:/tmp/click-odoo-configure-ldap.py")
