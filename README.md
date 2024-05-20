@@ -4,7 +4,7 @@ Start and configure a odoo instance.
 
 ## Version
 
-1.0.0
+1.0.1
 
 ## Odoo Version
 
@@ -24,12 +24,12 @@ See docs: https://docs.nethserver.org/projects/ns8/en/latest/odoo.html
 
 Instantiate the module with:
 
-    add-module ghcr.io/innovyou/odoo:1.0.0 1
+    add-module ghcr.io/innovyou/odoo:1.0.1 1
 
 The output of the command will return the instance name.
 Output example:
 
-    {"module_id": "odoo1", "image_name": "odoo", "image_url": "ghcr.io/innovyou/odoo:1.0.0"}
+    {"module_id": "odoo1", "image_name": "odoo", "image_url": "ghcr.io/innovyou/odoo:1.0.1"}
 
 ## Configure
 
@@ -87,7 +87,7 @@ To uninstall the instance:
 Test the module using the `test-module.sh` script:
 
 
-    ./test-module.sh <NODE_ADDR> ghcr.io/innovyou/odoo:1.0.0
+    ./test-module.sh <NODE_ADDR> ghcr.io/innovyou/odoo:1.0.1
 
 The tests are made using [Robot Framework](https://robotframework.org/)
 
